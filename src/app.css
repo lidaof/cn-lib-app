@@ -1,0 +1,89 @@
+.header {
+  display: flex;
+  align-items: center;
+  min-height: 300px;
+  padding: 0.5rem 1rem;
+  /* background-image: linear-gradient(284deg, #fedd4e, #fcb43a); */
+  /* color: black; */
+  margin-bottom: 1rem;
+  background-image: url('./img/homeimage2.jpeg');
+  background-position: center;
+  background-size: cover;
+  /* background-repeat: no-repeat; */
+  display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.header a {
+    color: white;
+  text-decoration: none;
+
+}
+
+.header-title {
+  font-size: 3rem;
+  font-weight: normal;
+}
+
+.header-title::after {
+  content: ' ▸ ';
+    color: white;
+  padding: 0 0.5rem;
+}
+
+.header-nav {
+  color: white;
+  font-size: 2rem;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.search-panel {
+  display: flex;
+}
+
+.search-panel__filters {
+  flex: 1;
+  max-width: 360px;
+  padding-right: 1rem;
+}
+
+.search-panel__results {
+  flex: 3;
+}
+
+.ais-Highlight-highlighted {
+  color: inherit;
+  font-size: inherit;
+  background-color: yellow;
+}
+
+#searchbox {
+  margin-bottom: 1rem;
+}
+
+#pagination {
+  margin: 2rem auto;
+  text-align: center;
+}
+
+#stats {
+  margin: 1rem auto;
+  padding-left: 1rem;
+}
+
+.ais-Hits-item article {
+  display: flex;
+  min-height: 200px;
+}
+
+.ais-Hits-item img {
+  max-height: 200px;
+  min-width: 150px;
+  padding-right: 16px;
+}
