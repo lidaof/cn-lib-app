@@ -7,32 +7,23 @@ import type { UiState } from 'instantsearch.js';
 type RouteState = {
   query?: string;
   page?: string;
-  brands?: string[];
-  category?: string;
-  rating?: string;
-  price?: string;
-  free_shipping?: string;
-  sortBy?: string;
+  categoriess?: string[];
+  languages?: string[];
+  publishers?: string[];
   hitsPerPage?: string;
 };
 
 const routeStateDefaultValues: RouteState = {
   query: '',
   page: '1',
-  brands: undefined,
-  category: '',
-  rating: '',
-  price: '',
-  free_shipping: 'false',
-  sortBy: 'instant_search',
+  categoriess: undefined,
+  languages: undefined,
+  publishers: undefined,
   hitsPerPage: '20',
 };
 
 const encodedCategories = {
-  Cameras: 'Cameras & Camcorders',
-  Cars: 'Car Electronics & GPS',
-  Phones: 'Cell Phones',
-  TV: 'TV & Home Theater',
+  Chinese: 'Chinese language',
 } as const;
 
 type EncodedCategories = typeof encodedCategories;
@@ -77,10 +68,10 @@ const originalWindowTitle = document.title;
 
 const router = historyRouter<RouteState>({
   cleanUrlOnDispose: false,
-  windowTitle({ category, query }) {
-    const queryTitle = query ? `Results for "${query}"` : '';
+  windowTitle({ categoriess, query }) {
+    const queryTitle = query ? `搜索 "${query}" 的结果` : '';
 
-    return [queryTitle, category, originalWindowTitle]
+    return [queryTitle, categoriess, originalWindowTitle]
       .filter(Boolean)
       .join(' | ');
   },
@@ -93,10 +84,7 @@ const router = historyRouter<RouteState>({
       (urlParts && urlParts[0]) ||
       `${protocol}//${hostname}${portWithPrefix}${pathname}search`;
 
-    const categoryPath = routeState.category
-      ? `${getCategorySlug(routeState.category)}/`
-      : '';
-    const queryParameters: Partial<RouteState> = {};
+   const queryParameters: Partial<RouteState> = {};
 
     if (
       routeState.query &&
@@ -108,34 +96,22 @@ const router = historyRouter<RouteState>({
       queryParameters.page = routeState.page;
     }
     if (
-      routeState.brands &&
-      routeState.brands !== routeStateDefaultValues.brands
+      routeState.categoriess &&
+      routeState.categoriess !== routeStateDefaultValues.categoriess
     ) {
-      queryParameters.brands = routeState.brands.map(encodeURIComponent);
+      queryParameters.categoriess = routeState.categoriess.map(encodeURIComponent);
     }
     if (
-      routeState.rating &&
-      routeState.rating !== routeStateDefaultValues.rating
+      routeState.languages &&
+      routeState.languages !== routeStateDefaultValues.languages
     ) {
-      queryParameters.rating = routeState.rating;
+      queryParameters.languages = routeState.languages.map(encodeURIComponent);
     }
     if (
-      routeState.price &&
-      routeState.price !== routeStateDefaultValues.price
+      routeState.publishers &&
+      routeState.publishers !== routeStateDefaultValues.publishers
     ) {
-      queryParameters.price = routeState.price;
-    }
-    if (
-      routeState.free_shipping &&
-      routeState.free_shipping !== routeStateDefaultValues.free_shipping
-    ) {
-      queryParameters.free_shipping = routeState.free_shipping;
-    }
-    if (
-      routeState.sortBy &&
-      routeState.sortBy !== routeStateDefaultValues.sortBy
-    ) {
-      queryParameters.sortBy = routeState.sortBy;
+      queryParameters.publishers = routeState.publishers.map(encodeURIComponent);
     }
     if (
       routeState.hitsPerPage &&
@@ -149,7 +125,7 @@ const router = historyRouter<RouteState>({
       arrayFormat: 'repeat',
     });
 
-    return `${baseUrl}/${categoryPath}${queryString}${hash}`;
+    return `${baseUrl}/${queryString}${hash}`;
   },
 
   parseURL({ qsModule, location }): RouteState {
@@ -162,28 +138,29 @@ const router = historyRouter<RouteState>({
     const {
       query = '',
       page = 1,
-      brands = [],
-      price,
-      free_shipping,
+      categoriess = [],
+      languages = [],
+      publishers = [],
       hitsPerPage,
-      sortBy,
-      rating,
     } = queryParameters;
 
     // `qs` does not return an array when there's a single value.
-    const allBrands = (
-      Array.isArray(brands) ? brands : [brands].filter(Boolean)
+    const allCategoriess = (
+      Array.isArray(categoriess) ? categoriess : [categoriess].filter(Boolean)
+    ) as string[];
+    const allLanguages = (
+      Array.isArray(languages) ? languages : [languages].filter(Boolean)
+    ) as string[];
+    const allPublishers = (
+      Array.isArray(publishers) ? publishers : [publishers].filter(Boolean)
     ) as string[];
 
     return {
-      category,
       query: decodeURIComponent(query as string),
       page: page as string,
-      brands: allBrands.map(decodeURIComponent),
-      rating: rating as string,
-      price: price as string,
-      free_shipping: free_shipping as string,
-      sortBy: sortBy as string,
+      categoriess: allCategoriess.map(decodeURIComponent),
+      languages: allLanguages.map(decodeURIComponent),
+      publishers: allPublishers.map(decodeURIComponent),
       hitsPerPage: hitsPerPage as string,
     };
   },
@@ -195,21 +172,9 @@ const getStateMapping = ({ indexName }: { indexName: string }) => ({
     return {
       query: indexUiState.query,
       page: (indexUiState.page && String(indexUiState.page)) || undefined,
-      brands: indexUiState.refinementList && indexUiState.refinementList.brand,
-      category:
-        indexUiState.hierarchicalMenu &&
-        indexUiState.hierarchicalMenu['hierarchicalCategories.lvl0'] &&
-        indexUiState.hierarchicalMenu['hierarchicalCategories.lvl0'].join('/'),
-      rating:
-        (indexUiState.ratingMenu &&
-          indexUiState.ratingMenu.rating &&
-          String(indexUiState.ratingMenu.rating)) ||
-        undefined,
-      price: indexUiState.range && indexUiState.range.price,
-      free_shipping:
-        (indexUiState.toggle && String(indexUiState.toggle.free_shipping)) ||
-        undefined,
-      sortBy: indexUiState.sortBy,
+      categoriess: indexUiState.refinementList && indexUiState.refinementList.categories,
+      languages: indexUiState.refinementList && indexUiState.refinementList.language,
+      publishers: indexUiState.refinementList && indexUiState.refinementList.publisher,
       hitsPerPage:
         (indexUiState.hitsPerPage && String(indexUiState.hitsPerPage)) ||
         undefined,
@@ -217,36 +182,27 @@ const getStateMapping = ({ indexName }: { indexName: string }) => ({
   },
 
   routeToState(routeState: RouteState): UiState {
-    const hierarchicalMenu: { [key: string]: string[] } = {};
-    if (routeState.category) {
-      hierarchicalMenu['hierarchicalCategories.lvl0'] =
-        routeState.category.split('/');
-    }
+    
 
     const refinementList: { [key: string]: string[] } = {};
-    if (routeState.brands) {
-      refinementList.brand = routeState.brands;
+    if (routeState.categoriess) {
+      refinementList.categories = routeState.categoriess;
+    }
+    if (routeState.languages) {
+      refinementList.language = routeState.languages;
+    }
+    if (routeState.publishers) {
+      refinementList.publisher = routeState.publishers;
     }
 
-    const range: { [key: string]: string } = {};
-    if (routeState.price) {
-      range.price = routeState.price;
-    }
+
+    
 
     return {
       [indexName]: {
         query: routeState.query,
         page: Number(routeState.page),
-        hierarchicalMenu,
         refinementList,
-        ratingMenu: {
-          rating: Number(routeState.rating),
-        },
-        range,
-        toggle: {
-          free_shipping: Boolean(routeState.free_shipping),
-        },
-        sortBy: routeState.sortBy,
         hitsPerPage: Number(routeState.hitsPerPage),
       },
     };

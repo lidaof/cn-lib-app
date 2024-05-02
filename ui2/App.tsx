@@ -10,6 +10,7 @@ import {
   SearchBox,
   Highlight,
   Snippet,
+  useStats,
 } from 'react-instantsearch';
 
 import {
@@ -38,6 +39,7 @@ const searchClient = algoliasearch(
 
 const indexName = 'cn-library-books';
 const routing = getRouting(indexName);
+
 
 export function App() {
   const containerRef = useRef<HTMLElement>(null);
@@ -73,6 +75,18 @@ export function App() {
     closeFilters();
   }
 
+  function CustomStats() {
+    const { nbHits, processingTimeMS, query } = useStats();
+
+    return (
+      <span>
+        耗时 {processingTimeMS.toLocaleString()}ms {query ? `搜索 "${query}"`: ''} 
+        {' '}
+        找到 {nbHits.toLocaleString()} 本书
+      </span>
+    );
+  }
+
   return (
     <InstantSearch
       searchClient={searchClient}
@@ -85,7 +99,7 @@ export function App() {
           <AlgoliaSvg />
         </p>
 
-        <p className="header-title">圣路易现代中文学校图书馆</p>
+        <p className="header-title"><a href='./'>圣路易现代中文学校图书馆</a></p>
 
         <SearchBox
           placeholder="搜索书籍 …"
@@ -104,7 +118,7 @@ export function App() {
           <div className="container-wrapper">
             <section className="container-filters" onKeyUp={onKeyUp}>
               <div className="container-header">
-                <h2>Filters</h2>
+                <h2>筛选</h2>
 
                 <div className="clear-filters" data-layout="desktop">
                   <ClearFilters />
@@ -187,6 +201,8 @@ export function App() {
                   },
                 ]}
               /> */}
+
+              <CustomStats />
 
               <HitsPerPage
                 className="container-option"

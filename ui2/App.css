@@ -56,6 +56,11 @@ h2 {
   font-weight: 300;
 }
 
+.header-title a {
+  color: #fff;
+  text-decoration: none;
+}
+
 /* Containers */
 
 .container {

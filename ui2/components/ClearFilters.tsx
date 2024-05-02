@@ -30,7 +30,7 @@ export function ClearFilters() {
               />
             </g>
           </svg>
-          Clear filters
+          重置筛选
         </div>
       </button>
     </div>
