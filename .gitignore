@@ -21,3 +21,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+
+*/node_modules
+
+# testing
+*/coverage
+
+# production
+*/dist
+*/.cache
+*/.parcel-cache
