@@ -83,7 +83,7 @@
   }
 
   .container-filters-footer .button-primary {
-    background-color: #e2a400;
+    background-color: #0c43c1;;
     color: #fff;
   }
 
@@ -99,7 +99,7 @@
     border: none;
     border-radius: 8px;
     bottom: 2rem;
-    box-shadow: 0 4px 22px 0 rgba(185, 135, 0, 0.5);
+    box-shadow: 0 4px 22px 0 rgba(9, 13, 248, 0.5);
     color: #fff;
     cursor: pointer;
     display: flex;
@@ -129,10 +129,10 @@
   }
 
   .header {
-    background: linear-gradient(to bottom, #ae8600, #885b01);
+    background: linear-gradient(to bottom, #01296e, #0927e7);
     background-image: url('./assets/homeimage2.jpeg');
     background-image: url('./assets/homeimage2.jpeg'),
-      linear-gradient(to bottom, #ae8600, #885b01);
+      linear-gradient(to bottom, #2b038a, #270cf0);
     background-position: bottom;
     background-size: cover;
     min-height: 300px;

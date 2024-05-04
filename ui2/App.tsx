@@ -1,5 +1,5 @@
 import algoliasearch from 'algoliasearch/lite';
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   Configure,
   Hits,
@@ -29,6 +29,8 @@ import './Theme.css';
 import './App.css';
 import './components/Pagination.css';
 import './App.mobile.css';
+import 'react-responsive-modal/styles.css';
+import { Modal } from 'react-responsive-modal';
 
 import type { Hit as AlgoliaHit } from 'instantsearch.js';
 
@@ -102,13 +104,13 @@ export function App() {
         <p className="header-title"><a href='./'>圣路易现代中文学校图书馆</a></p>
 
         <SearchBox
-          placeholder="搜索书籍 …"
+          placeholder="搜索书籍…"
           submitIconComponent={SubmitIcon}
         />
       </header>
 
       <Configure
-        attributesToSnippet={['description:20']}
+        attributesToSnippet={['description:10']}
         snippetEllipsisText="…"
         removeWordsIfNoResults="allOptional"
       />
@@ -297,8 +299,19 @@ type HitType = AlgoliaHit<{
 }>;
 
 function Hit({ hit }: { hit: HitType }) {
+  const [open, setOpen] = useState(false);
+  const onOpenModal = () => setOpen(true);
+  const onCloseModal = () => setOpen(false);
   return (
     <article className="hit">
+      <Modal open={open} onClose={onCloseModal} center>
+        <img className="hit-modal-img" src={hit.image} alt={hit.name} />
+        <h2>书名：{hit.name}</h2>
+        <p>简介: {hit.description}</p>
+        <p>作者：{hit.authors}</p>
+        <p>分类: {hit.categories.join(', ')}</p>
+        <p>出版社：{hit.publisher}</p>
+      </Modal>
       <header className="hit-image-container">
         <img src={hit.image} alt={hit.name} className="hit-image" />
       </header>
@@ -317,13 +330,12 @@ function Hit({ hit }: { hit: HitType }) {
         </p>
 
         <footer>
-          <p>
             <span className="hit-em">{hit.authors}</span><br />
             <span className="hit-rating">
               {hit.publisher}
             </span>
-          </p>
         </footer>
+        <button className="hit-button" type="button" onClick={onOpenModal}>更多</button>
       </div>
     </article>
   );

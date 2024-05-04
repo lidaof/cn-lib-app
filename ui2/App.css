@@ -27,10 +27,9 @@ h2 {
 
 .header {
   align-items: center;
-  background: linear-gradient(to bottom, #fbc300, #c98a00);
+  background: linear-gradient(to bottom, #2b038a, #270cf0);
   background-image: url('./assets/homeimage2.jpeg');
-  background-image: url('./assets/homeimage2.jpeg'),
-    linear-gradient(to bottom, #fbc300, #c98a00);
+  background-image: url('./assets/homeimage2.jpeg'), linear-gradient(to bottom, #2b038a,#270cf0);
   background-position: center;
   background-size: cover;
   color: #fff;
@@ -216,6 +215,7 @@ mark {
 
 .hit-description {
   margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .hit-info-container {
@@ -239,7 +239,7 @@ mark {
 }
 
 .hit-em {
-  color: #0c43c1;
+  color: #bc0c54;
   font-size: 11px;
   font-weight: 600;
   margin-bottom: 4px;
@@ -306,7 +306,7 @@ mark {
 }
 
 .ais-ToggleRefinement-checkbox:checked::before {
-  color: #e2a400;
+  color: #01296e;
 }
 
 .ais-ToggleRefinement-checkbox::before {
@@ -347,5 +347,28 @@ mark {
 }
 
 .ais-Pagination-item--selected {
+  background-color: #0c43c1;
+}
+.hit-modal-img {
+  height: 100%;
+  width: 100%;
+  max-width: 300px;
+  object-fit: contain;
+}
+
+.hit-button {
+  background-color: #0c43c1;
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  margin-top: 4px;
+}
+
+
+.ais-RefinementList-item--selected .ais-RefinementList-checkbox {
   background-color: #0c43c1;
 }
